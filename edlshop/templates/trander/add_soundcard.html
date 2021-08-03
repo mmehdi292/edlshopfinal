@@ -1,0 +1,87 @@
+{% extends 'trander/base.html' %}
+{% load static %}
+
+{% block content %}
+{% if message %}
+  <div class="row" id="proBanner">
+    <div class="col-12">
+        <div class="alert alert-danger" role="alert">
+            Opération fait par échec
+          </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Ajouter Carte son</h4>
+        <form class="forms-sample" action="{% url 'addSoundCard' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleInputName1">nom</label>
+                <input type="text" class="form-control" name="name" placeholder="Name">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail3">Petite description</label>
+                <input type="text" class="form-control" name="shortDescription" placeholder="Petite description">
+            </div>
+            <div class="form-group">
+                <label for="exampleTextarea1">Description</label>
+                <input type="text" class="form-control" name="description" placeholder="Description">
+                
+            </div>
+            
+
+
+            <div class="form-group">
+                <label>File upload</label>
+                <input type="file" name="image" class="">
+              </div>
+
+
+
+
+            <div class="form-group">
+                <label for="exampleInputCity1">Prix</label>
+                <input type="text" class="form-control" name="price" placeholder="Prix">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputCity1">Livraison</label>
+                <input type="text" class="form-control" name="delivery" placeholder="Livraison">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputCity1">Remis</label>
+                <input type="text" class="form-control" name="discount" placeholder="Remis">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputCity1">On stock</label>
+                <input type="text" class="form-control" name="inStock" placeholder="On stock">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Catégorie</label>
+                <select class="form-control form-control-lg" name ="category" id="exampleFormControlSelect1">
+                    <option selected> choose un </option>
+                    {% for c in categorie %}
+                    <option value="{{ c.id }}">{{ c.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputCity1">Marque</label>
+                <input type="text" class="form-control" name="mark" placeholder="Marque">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputCity1">Audio Chipset</label>
+                <input type="text" class="form-control" name="audioChipset" placeholder="Audio Chipset">
+            </div>
+
+            <button type="submit" class="btn btn-gradient-primary mr-2">Submit</button>
+            <button type="reset" class="btn btn-light">Cancel</button>
+        </form>
+    </div>
+</div>
+
+
+
+{% endblock %}

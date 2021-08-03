@@ -1,0 +1,53 @@
+
+{%  extends 'client/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid mt-3">
+        <div class="container">
+
+
+            <div class="card pl-5 p-5 shadow">
+                <form action="{% url 'signup' %}" method="POST">
+                    {% csrf_token %}
+                    <h2 class="title"> Sign up</h2>
+                    <p class="subtitle">You have an account? <a href="#"> Log in</a></p>
+
+                    <div class="email-login">
+
+                        <label for="email"> <b>First Name</b></label>
+                        <input class="inputover" type="text" placeholder="Enter First name" name="fisrt" required>
+
+                        <label for="email"> <b>Last Name</b></label>
+                        <input class="inputover" type="text" placeholder="Enter last name" name="last" required>
+
+                        <label for="email"> <b>Email</b></label>
+                        <input class="inputover" type="email" placeholder="Enter Email" name="email" required>
+
+                        <label for="psw"><b>Password</b></label>
+                        <input class="inputover" type="password" placeholder="Enter Password" name="psw" required>
+
+                        <label for="psw"><b>Re Password</b></label>
+                        <input class="inputover" type="password" placeholder="Enter re Password" name="re_psw" required>
+                        <label for="psw"><b>Your role</b></label>
+                        <div class="row">
+                            <div class="col-6">
+                                <p class="subtitle"><input class="mx-3" type="checkbox" name="client" />client</p>
+                            </div>
+                            <div class="col-6">
+
+                                <p class="subtitle"><input class="mx-3" type="checkbox" name="commercent" />commercent
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <button class="cta-btn">Sing up</button>
+                    </form>
+            </div>
+
+
+
+        </div>
+    </div>
+{% endblock %}

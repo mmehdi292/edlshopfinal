@@ -1,0 +1,64 @@
+
+{%  extends 'client/base.html' %}
+{% load static %}
+{% block slidcate %}
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-lg-3">
+            {%  include 'client/categories.html' %}
+        </div>
+        <div class="col-lg-9">
+            {%  include 'client/slideshow.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="container mt-3">
+    <div class="d-flex justify-content-between">
+        <h3 class="text-color-primary">Meilleur articles</h3>
+        <button type="button" class="btn btn-mauve shadow" onclick="window.location.href='{% url 'articles'%}?best=true'">voir touts</button>
+    </div>
+    <div class="row justify-content-center mt-3">
+        {% for i in best %}
+        <div class="col-lg-2">
+            <div class="card shadow ">
+                <img src="{% get_media_prefix %}{{ i.image }}" class="card-img-top" alt="">
+                <div class="card-content-over">
+                    <h3><a href="{% url 'article' i.id %}">{{i.name|slice:":15" }}</a></h3>
+                    <h2 class="text-center prix">{{i.price}} <small>DA</small></h2>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- end cards widgets --->
+<div class="container mt-3">
+    <div class="d-flex justify-content-between">
+        <h3 class="text-color-primary">plus vendeur</h3>
+        <button type="button" class="btn btn-mauve shadow" onclick="window.location.href='{% url 'articles'%}?pulsvendeur=true'">voir touts</button>
+    </div>
+    <div class="row justify-content-center mt-3">
+
+        {% for i in new %}
+        <div class="col-lg-2">
+            <div class="card shadow mt-3">
+                <img src="{% get_media_prefix %}{{ i.image }}" class="card-img-top" alt="">
+                <div class="card-content-over">
+                    <h3><a href="{% url 'article' i.id %}">{{i.name|slice:":15" }}</a></h3>
+                    <h2 class="text-center prix">{{i.price}} <small>DA</small></h2>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+
+
+    </div>
+</div>
+
+<!-- end cards widgets --->
+
+
+{% endblock %}

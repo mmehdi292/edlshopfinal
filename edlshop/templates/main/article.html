@@ -1,0 +1,202 @@
+{% extends 'client/base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% block sousnavbar %}
+{% include 'client/sousnavbar.html' %}
+{% endblock %}
+
+{% block content %}
+<!-- start article widgets --->
+<div class="container-fluid mt-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-5">
+                <div class="card shadow">
+                    <img src="{% get_media_prefix %}{{ article.image }}" class="card-img-top" height="200" alt="">
+                </div>
+                {% if article.discount != 0 %}
+                <div class="card shadow text-center mt-3 pt-2">
+                    {% with prix=article.price remis=article.price|mul:article.discount|div:100 %}
+                            <h5>Prix: <span class="text-color-primary">{{ prix|sub:remis }}DA</span> <span class="text-color-primary">
+                                -{{ article.discount }}%</span></h5>
+                    {% endwith %} 
+                </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card shadow text-center mt-3 pt-2">
+                            <h5>Prix: <span class="text-color-primary">{{ article.price }} DA</span></h5>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card shadow text-center mt-3 pt-2">
+                            <h5>Livraison: <span class="text-color-primary">{{ article.delivery }} DA</span></h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="card shadow text-center mt-3 pt-2">
+                            <h5><img src="{% static 'assets/icons/star.png' %}" alt="" height="20" width="20"><span> 4.9</span>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card shadow text-center mt-3 pt-2">
+                            <div class="row">
+                                <h5>Quantité:
+                                    <span><input class="number_count" id="a" name="input" type="number" value="1"></span>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card shadow text-center mt-3 pt-2">
+                            <h5>Enstock: <span class="text-color-primary">{{ article.inStock }}</span></h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    {% if article.inStock == 0 %}
+                    <div class="col-12">
+                        
+                        <button type="button"
+                            class="btn btn-mauve shadow text-center mt-3 pt-2 w-100" onclick="location.href='{% url 'addListAttendPage' article.id %}';"><i class="bi  bi-bell-fill mx-2" > </i>Prévenez-moi</button>
+                    </div>
+                    </div>
+                    {% else %}
+
+                    <div class="col-6">
+                        <form action="{% url 'addshopcard' %}" method="POST">
+                            {% csrf_token %}
+                            <input name="count" id="count1" hidden >
+                            <input name="idproduct" id="idproduct" value="{{ article.id }}" hidden >
+                        <button type="submit"
+                            class="btn btn-mauve shadow text-center mt-3 pt-2 w-100"  ><i class="bi bi-cart mx-2" > </i>Ajouter au panier</button></form>
+                    </div>
+                    
+                    <div class="col-6">
+                        <form action="{% url 'achatverfication' %}" method="POST">
+                            {% csrf_token %}
+                            <input name="count" id="count2" hidden >
+                            <input name="idproduct1" id="idproduct1" value="{{ article.id }}" hidden >
+                        <button type="submit" class="btn btn-light shadow text-center mt-3 pt-2 w-100"><i class="bi bi-bag mx-2" > </i>Acheter</button></div>
+                    </form>
+                        </div>
+                        {% endif %}
+            </div>
+            <div class="col-7">
+                <div class="card shadow px-3 py-2">
+                    <h5 class="text-color-primary mt-3"><a href="#">{{ article.name }}</a></h5>
+                    <p><b>{{ article.shortDescription }}</b></p>
+                    <p>{{ article.description }}</p>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="card shadow text-center mt-3 pt-2">
+                            {% if article.usernameTrader.imageProfile == '' %}
+                            <h5><img src="{% static 'assets/icons/user_prof.jpeg'%}" height="20" width="20"
+                                style="margin-right: 10px; border-radius: 5px;" alt="{% url 'profile' article.usernameTrader.id %}"><span><a
+                                    href="{% url 'profile' article.usernameTrader.id %}">{{article.usernameTrader.first_name }}</a></span>
+                            </h5>
+                            {% else %}
+                            <h5><img src="{% get_media_prefix %}{{ article.usernameTrader.imageProfile }}" height="20" width="20"
+                                    style="margin-right: 10px; border-radius: 5px;" alt=""><span><a
+                                        href="{% url 'profile' article.usernameTrader.id %}">{{article.usernameTrader.first_name }}</a></span>
+                            </h5>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card shadow text-center mt-3">
+                            <button type="button" class="btn btn-secondary shadow w-100"><i class="bi bi-x-square-fill mx-2" > </i>rapport</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card shadow text-center mt-3">
+                        <div class="rating">
+                            <input type="radio" name="rating" value="5" id="5">
+                            <label for="5">☆</label> <input type="radio" name="rating" value="4" id="4">
+                            <label for="4">☆</label> <input type="radio" name="rating" value="3" id="3">
+                            <label for="3">☆</label> <input type="radio" name="rating" value="2" id="2">
+                            <label for="2">☆</label> <input type="radio" name="rating" value="1" id="1">
+                            <label for="1">☆</label>
+                        </div>
+                    </div>
+
+                    </div>
+                    
+                    <div class="col-6"> <button type="button"
+                        class="btn btn-light shadow text-center mt-3 pt-2 w-100"><i class="bi bi-heart-fill mx-2"> </i>Préférée</button></div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        
+        <div class="row mt-3">
+            <div class="card shadow ">
+                <div class="row m-3">
+                    <div class="col-1">
+                        {% if article.usernameTrader.imageProfile == '' %}
+                            <img src="{% static 'assets/icons/user_prof.jpeg'%}" height="100" width="100"
+                        style="margin-right: 10px; border-radius: 5px;" alt="">
+                            {% else %}
+                            <img src="{% get_media_prefix %}{{ article.usernameTrader.imageProfile }}" height="100" width="100"
+                        style="margin-right: 10px; border-radius: 5px;" alt="">
+                            {% endif %}
+                        
+                        </div> 
+                    <div class="col-10">
+                        <h5 class="text-color-primary mx-3 my-3"><a href="#">mmehdi292</a></h5>
+                        <p class="mx-3 my-3">Tres bonne produit</p>
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="card shadow ">
+                <form action="" method="POST">
+                <div class="row m-3">
+                    
+                    <div class="col-1">
+                        
+                        {% if article.usernameTrader.imageProfile == '' %}
+                            <img src="{% static 'assets/icons/user_prof.jpeg'%}" height="80" width="100"
+                        style="margin-right: 10px; border-radius: 5px;" alt="">
+                        {% else %}
+                            <img src="{% get_media_prefix %}{{ article.usernameTrader.imageProfile }}" height="80" width="100"
+                        style="margin-right: 10px; border-radius: 5px;" alt="">
+                            {% endif %}
+                        
+                        
+                        </div>
+                    <div class="col-9">
+                        <input class="inputover" type="text" placeholder="Ajouter un reveiw" style="width: 100%;" name="comment" required>
+                    </div>
+                    <div class="col-2"><button type="submit" style="height: 60px;" class="cta-btn shadow w-100 mt-2"><i class="bi bi-receipt mx-2" > Commenter</i></button></div>
+                </div>
+            </div>
+        </form>
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+<script>
+document.getElementById("a").addEventListener("click", syncro);
+function syncro(){
+    document.getElementById('count1').value=document.getElementById('a').value;
+    document.getElementById('count2').value=document.getElementById('a').value
+    }
+</script>
+<!-- end article widgets --->
+{% endblock %}

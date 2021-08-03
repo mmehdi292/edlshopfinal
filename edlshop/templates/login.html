@@ -1,0 +1,35 @@
+
+{%  extends 'client/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid mt-3">
+    <div class="container">
+
+
+        <div class="card pl-5 p-5 shadow">
+            <form action="{% url 'login' %}" method="POST">
+                <h2 class="title"> Log in</h2>
+                <p class="subtitle">Don't have an account? <a href="{url 'signup' }"> sign Up</a></p>
+                {% if message %}
+                <div class="alert alert-danger" role="alert">
+                    Username or password icorrect
+                </div>
+                {% endif %}
+                {% csrf_token %}
+                <div class="email-login">
+                    <label for="email"> <b>Email</b></label>
+                    <input class="inputover" type="email" autofill="false"  placeholder="Enter Email" name="email" required>
+                    <label for="psw"><b>Password</b></label>
+                    <input class="inputover" type="password"  placeholder="Enter Password" name="password" required>
+                </div>
+                <button class="cta-btn">Log In</button>
+                <a class="forget-pass" href="#">Forgot password?</a>
+                </form>
+        </div>
+
+
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-mauve">
+    <div class="container">
+        <a class="navbar-brand" href="#">eDLShop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form class="container-fluid">
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1"><img src="{% static 'assets/icons/research.png'%}"
+                            alt="shopping cart" width="24" height="24"></span>
+                    <input type="text" class="form-control research-box" placeholder="What are you looking for ..."
+                        aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+            </form>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <img src="{% static 'assets/icons/shopping-cart.png'%}" alt="shopping cart" width="32"
+                            height="32">
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Connecter</a></li>
+                        <li><a class="dropdown-item" href="#">create account</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <img src="{% static 'assets/icons/notification.png'%}" alt="notification" width="32"
+                            height="32">
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li class="dropdown-item-over width-240-40">
+                            <div class="row ">
+                                <div class="col-notification1">
+                                    <img src="{% static 'assets/images/img.jpg'%}" class="card-img-top rounded-20"
+                                        alt="">
+                                </div>
+                                <div class="col-notification2">
+                                    <h3><a href="#">Wireless Headphones</a></h3>
+                                </div>
+                                <div class="col-notification1">
+                                    <h2 class="text-center prix">40000 <small>DA</small></h2>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <img src="{% static 'assets/icons/user.png'%}" alt="profile" width="32" height="32">
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% if request.session.role == 'client'  %}
+                        <li class="dropdown-item-over">Bienvunue,{{ request.session.first_name }}</li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li><a class="dropdown-item" href="#"><i class="fab fa-buffer px-2"></i>Mes
+                                commands</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fa fa-bookmark px-2"> </i>Mon
+                                bookmarks</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fa fa-id-card px-2"> </i>Mon
+                                profile</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out-alt px-2">
+                                </i>desconnecter</a>
+                        </li>
+
+                        {% else %}
+                        <li><a class="dropdown-item" href="{% url 'login' %}"><i class="fa fa-sign-in-alt px-2">
+                                </i>Connecter-vous</a>
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'signup' %}"><i class="fa fa-user-plus px-2"> </i> Creer un
+                                compte</a></li>
+
+                        {% endif %}
+                        
+                    </ul>
+                </li>
+
+            </ul>
+
+
+        </div>
+    </div>
+</nav>

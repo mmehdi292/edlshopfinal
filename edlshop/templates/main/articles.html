@@ -1,0 +1,110 @@
+{% extends 'client/base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% block sousnavbar %}
+{% include 'client/sousnavbar.html' %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    {% if link == 'category' %}
+    <h3 class="">Résultant de category: <a class="text-color-primary" href="#"> {{value}}</a></h3>
+    {% endif %}
+    {% if link == 'search' %}
+    <h3 class="">Résultant de recherche: <a class="text-color-primary" href="#"> {{value}}</a></h3>
+    {% endif %}
+    {% if link == 'new' %}
+    <h3 class="">Nouvelle offre</h3>
+    {% endif %}
+
+    {% if link == 'best' %}
+    <h3 class="">Meilleur offre</h3>
+    {% endif %}
+    
+    {% if link == 'pulsvendeur' %}
+    <h3 class="">Offres les plus acheter</h3>
+    {% endif %}
+
+    {% if link == 'all' %}
+    <h3 class="">Touts les offres</h3>
+    {% endif %}
+
+    {% for i in page_obj %}
+    <div class="col-12 shadow mt-3">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-4">
+
+                    <img src="{% get_media_prefix %}{{ i.image }}" class="card-img-top" height="200" alt="">
+                </div>
+                <div class="col-md-8">
+                    <h5 class="text-color-primary mt-3"><a href="{% url 'article' i.id %}">{{ i.name }}</a></h5>
+                    <p>{{ i.shortDescription }}</p>
+                    <div class="row mt-3">
+                        {% if i.usernameTrader.imageProfile == '' %}
+                        <div class="col-3"><img src="{% static 'assets/icons/user_prof.jpeg'%}"
+                                class="in_bloc" alt=""><span class="text-color-primary"><a href="{% url 'profile' i.usernameTrader.id %}">{{i.usernameTrader.first_name }}</a></span></div>
+                        {% else %}
+                        <div class="col-3"><img src="{% get_media_prefix %}{{ i.usernameTrader.imageProfile }}"
+                            class="in_bloc" alt=""><span class="text-color-primary"><a href="{% url 'profile' i.usernameTrader.id %}">{{i.usernameTrader.first_name }}</a></span></div>
+                        {% endif %}
+                        
+                        <div class="col-3 mt-1">Enstock: <span class="text-color-primary">{{ i.inStock }}</span></div>
+                        <div class="col-3"><img src="{% static 'assets/icons/star.png'%}" class="in_bloc"
+                                alt=""><span>4.9</span></div>
+                        <div class="col-3"><img src="{% static 'assets/icons/complaint.png'%}" class="in_bloc"
+                                alt=""><span>40</span></div>
+                    </div>
+                    <div class="row mt-3">
+                        {% if i.discount != 0 %}
+
+                        <div class="col-4">
+                            {% with prix=i.price remis=i.price|mul:i.discount|div:100 %}
+                            <h5>Prix: <span class="text-color-primary">{{ prix|sub:remis }}DA</span></h5>
+                            {% endwith %}  
+                        </div>
+                        <div class="col-4">
+                            <h5>Remise: <span class="text-color-primary">-{{ i.discount }} %</span></h5>
+                        </div>
+                        <div class="col-4">
+                            <h5>Prix ancien: <del><span class="text-color-primary">{{ i.price }} DA</span></del></h5>
+                        </div>
+                        {% else %}
+                        <div class="col-4">
+                            <h5 class="text-color-primary">Prix:{{ i.price }} DA</h5>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="d-flex justify-content-center mt-4">
+        <ul class="pagination shadow">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="{% url 'articles'  %}?{{link}}={{value}}&page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{% url 'articles'  %}?{{link}}={{value}}&page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="row justify-content-md-center mt-3">
+        Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}.
+    </div>
+</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'trander/base.html' %}
+{% load static %}
+
+{% block content %}
+{% if message %}
+<div class="row" id="proBanner">
+    <div class="col-12">
+      <span class="d-flex align-items-center purchase-popup">
+        <p>Opération fait par échec</p>
+      </span>
+    </div>
+  </div>
+{% endif %}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Update {{ cpu.name }}</h4>
+        <form class="forms-sample" action="{% url 'updatecpus' cpu.id %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleInputName1">nom</label>
+                <input type="text" class="form-control" value="{{ cpu.name }}" name="name" placeholder="Name">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail3">Petite description</label>
+                <input type="text" class="form-control" value="{{ cpu.shortDescription }}"  name="shortDescription" placeholder="Petite description">
+            </div>
+            <div class="form-group">
+                <label for="exampleTextarea1">Description</label>
+                <input type="text" class="form-control" value="{{ cpu.description }}"  name="description" placeholder="Description">
+                
+            </div>
+            
+
+
+            <div class="form-group">
+                <label>File upload</label>
+                <input type="file" name="image" value="{{ cpu.image }}"  class="">
+              </div>
+
+
+
+
+            <div class="form-group">
+                <label for="exampleInputCity1">Prix</label>
+                <input type="text" class="form-control" value="{{ cpu.price }}" name="price" placeholder="Prix">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputCity1">Livraison</label>
+                <input type="text" class="form-control"  value="{{ cpu.delivery }}" name="delivery" placeholder="Livraison">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputCity1">Remis</label>
+                <input type="text" class="form-control" value="{{ cpu.discount }}" name="discount" placeholder="Remis">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputCity1">On stock</label>
+                <input type="text" class="form-control" value="{{ cpu.inStock }}" name="inStock" placeholder="On stock">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputCity1">Marque</label>
+                <input type="text" class="form-control" value="{{ cpu.mark }}"  name="mark" placeholder="Marque">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputCity1">Model de processeur</label>
+                <input type="text" class="form-control" name="processorModel" value="{{ cpu.processorModel }}" placeholder="Model de processeur">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputCity1">Support de processeur</label>
+                <input type="text" class="form-control" name="pocessorSupport" value="{{ cpu.pocessorSupport }}"  placeholder="Support de processeur">
+            </div>
+            
+            <button type="submit" class="btn btn-gradient-primary mr-2">Submit</button>
+            <button type="reset" class="btn btn-light">Cancel</button>
+        </form>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+

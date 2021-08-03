@@ -1,0 +1,97 @@
+{% extends 'client/base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% block sousnavbar %}
+{% include 'client/sousnavbar.html' %}
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container-fluid mt-3">
+    <div class="container">
+        <div class="card pl-5 p-5 mb-3 shadow">
+            {% if message %}
+            <div class="alert alert-success" role="alert">
+                La demande est annulée, Votre solde est bien récupéré
+              </div>
+            {% endif %}
+            <h1>Mes commands</h1>
+            {% if page_obj %}
+            <table id="cart" class="table table-responsive">
+                <thead>
+                    <tr class="names">
+                        <th style="width:50%">Article</th>
+                        <th style="width:10%" class="text-right hidden-xs">Quantité</th>
+                        <th style="width:10%" class="text-right hidden-xs">Prix Total</th>
+                        <th style="width:15%" class="text-right">Liversion</th>
+                        <th style="width:10%" class="text-right">Etat</th>
+                        <th style="width:5%">Operation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in page_obj %}
+                        {% if i.advancement != 'Terminer' %}
+                    <tr class="item">
+                        <td data-th="Product">
+                            <div class="row">
+                                <div class="col-sm-3 hidden-xs"><img
+                                        src="{% get_media_prefix %}{{ i.article.image}}"
+                                        alt="Converse" class="img-product img-responsive img-rounded" width="120" height="120" /></div>
+                                <div class="col-sm-9">
+                                    <h4 class="nomargin">{{ i.article.name}}</h4>
+                                    <p class="hidden-xs">{{ i.article.shortDescription}}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-th="Size" class="text-right hidden-xs">{{ i.partNumber }}</td>
+                        <td data-th="Price" class="text-right hidden-xs">{{ i.price }}</td>
+                        <td data-th="Quantity" class="text-right">{{ i.delivery }}</td>
+                        <td data-th="Subtotal" class="text-right">{{ i.advancement }}</td>
+                        <td class="actions">
+                            {% if i.advancement == 'en traitement' %}
+                            <a class="btn btn-default btn-sm text-center" href="{% url 'DeleteDemmand' i.id %}"><i class="bi bi-trash-fill"></i></a>
+                            {% endif %}
+
+                            {% if i.advancement == 'en transport' %}
+                            <a class="btn btn-default btn-sm text-center" href="{% url 'AccepterDemmandclient' i.id %}"><i class="bi bi-check-circle-fill"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    
+
+                    
+                </tbody>
+                
+            </table>
+            <div class="d-flex justify-content-center mt-4">
+                <ul class="pagination shadow">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'demmand'  %}?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'demmand'  %}?page={{ page_obj.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="row justify-content-md-center mt-3">
+                Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}.
+            </div>
+            {% else %}
+            <h1 class="text-center ">La liste vide</h1>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

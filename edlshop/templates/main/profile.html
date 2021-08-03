@@ -1,0 +1,238 @@
+{% extends 'client/base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% block sousnavbar %}
+{% include 'client/sousnavbar.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+    <div class="row">
+        {% if isYourProfile %}
+        <div class="card shadow px-3 py-3">
+            <div class="row">
+                <form action="{% url 'profilePhotoUpadte' %}" method="POST" enctype="multipart/form-data">
+                    <div class="d-flex justify-content-center">
+                        {% csrf_token %}
+                        <div class="position-relative">
+                            
+                            {% if user.imageProfile == '' %}
+                            <img src="{% static 'assets/icons/user_prof.jpeg'%}" height="250" width="250"
+                                style="margin-right: 10px; border-radius: 100px;" alt="">
+                      
+
+                        {% else %}
+                            <img src="{% get_media_prefix %}{{ user.imageProfile }}" height="250" width="250"
+                                style="margin-right: 10px; border-radius: 100px;" alt="">
+                       
+                       {% endif %}
+
+
+
+
+                            <label for="up" class="position-absolute bottom-0 end-0 shadow px-3 py-3"
+                                style="color: white; border-radius: 50px; border: white 1px solid; background-color: #9663BD;"><i
+                                    class="bi bi-file-earmark-plus-fill "></i></label>
+                        </div>
+
+
+                    </div>
+            </div>
+            <div class="row">
+                <div class="d-flex justify-content-center">
+                    <input type="file" name="image" id="up" hidden>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="cta-btn shadow mt-2" style="width: auto;">
+                        <i class="bi bi-upload mx-2"> Upload</i></button>
+
+                </div>
+            </div>
+            </form>
+
+            <div class="row">
+                <div class="d-flex justify-content-center">
+                    <h1>{{user.first_name}}{{user.last_name}}</h1>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="row mt-3">
+        <div class="col-6">
+            <div class="card pl-5 p-5 shadow">
+                <form action="{% url 'updatedata' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="email-login">
+                        <h2 class="title">Mise a jour votre information</h2>
+                        <label for="email"> <b>First Name</b></label>
+                        <input class="inputover" type="text" value="{{user.first_name}}" placeholder="Enter First name" name="fisrt" required>
+
+                        <label for="last"> <b>Last Name</b></label>
+                        <input class="inputover" type="text" value="{{user.last_name}}" placeholder="Enter last name" name="last" required>
+
+                        <label for="last"> <b>Numéro carte nationale</b></label>
+                        <input class="inputover" type="text" value="{{user.numCard}}" placeholder="Enter Numéro carte nationale" name="numcart"
+                            required>
+
+                        <label for="email"> <b>Email</b></label>
+                        <input class="inputover" type="email" value="{{user.email}}" placeholder="Enter Email" name="email" required>
+
+                        <label for="tel"><b>Tel</b></label>
+                        <input class="inputover" type="text" value="{{user.phoneNumber}}" placeholder="Enter Password" name="tel" required>
+
+                        <label for="psw"><b>Adresse</b></label>
+                        <input class="inputover" type="text" value="{{user.address}}" placeholder="Enter re Password" name="Adresse" required>
+
+                    </div>
+                    <button class="cta-btn" type="submit">Update profile</button>
+                </form>
+            </div>
+
+        </div>
+        <div class="col-6">
+            <div class="card pl-5 p-5 shadow">
+                {% if card == None%}
+                <form action="{% url 'addcard' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="email-login">
+                        <h2 class="title">Ajouter carte</h2>
+                        <label for="email"> <b>Carte number</b></label>
+                        <input class="inputover" type="text" placeholder="Enter Carte number" name="num" required>
+
+                        <label for="last"> <b>Crate name</b></label>
+                        <input class="inputover" type="text" placeholder="Enter Carte name" name="name" required>
+
+                        <label for="email"> <b>MM/YY</b></label>
+                        <input class="inputover" type="text" placeholder="Enter mm/yy" name="mmyy" required>
+
+                        <label for="tel"><b>CVV</b></label>
+                        <input class="inputover" type="text" placeholder="Enter CVV" name="cvv" required>
+
+                    </div>
+                    <button class="cta-btn">Update card</button>
+                </form>
+                {% else %}
+                        <form action="{% url 'deletecard' %}" method="POST">
+                            {% csrf_token %}
+                            <h2 class="title">Carte information</h2>
+                            <p class="subtitle mt-3">La carte est: <span class="text-color-primary">{{ card.cardNumber }}</span></p>
+                            <button class="cta-btn">Supprimer</button>
+                        </form>
+                {% endif %}
+            </div>
+
+            <div class="card pl-5 p-5 shadow mt-3">
+                <form action="{% url 'passwordUpdate' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="email-login">
+                        <h2 class="title">Modifier mot de passe</h2>
+                        <label for="email"> <b>Old password</b></label>
+                        <input class="inputover" type="password" placeholder="Enter old password" name="old" required>
+
+                        <label for="last"> <b>New password</b></label>
+                        <input class="inputover" type="password" placeholder="Enter new passwor" name="pass" required>
+
+                        <label for="last"> <b>Retry new password</b></label>
+                        <input class="inputover" type="password" placeholder="Enter retry new password" name="newpass"
+                            required>
+
+
+
+                    </div>
+                    <button class="cta-btn">Update password</button>
+                </form>
+            </div>
+
+        </div>
+        {% else %}
+        <div class="card shadow px-3 py-3">
+            <div class="row">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <div class="d-flex justify-content-center">
+
+
+                       
+
+                        <div class="position-relative">
+                            {% if user.imageProfile == '' %}
+                            <img src="{% static 'assets/icons/user_prof.jpeg'%}" height="250" width="250"
+                                style="margin-right: 10px; border-radius: 100px;" alt="">
+                      
+
+                        {% else %}
+                            <img src="{% get_media_prefix %}{{ user.imageProfile }}" height="250" width="250"
+                                style="margin-right: 10px; border-radius: 100px;" alt="">
+                       
+                       {% endif %}
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="cta-btn shadow mt-2" style="width: auto;">
+                        <i class="bi bi-person-x-fill mx-2"> Rapport</i></button>
+
+                </div>
+        </div>
+        </form>
+
+        <div class="row">
+            <div class="d-flex justify-content-center">
+                <h1>{{user.first_name}} {{user.last_name}}</h1>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="card pl-5 p-5 shadow">
+            <form>
+
+                <div class="email-login">
+                    <h2 class="title">Les information</h2>
+                    <label for="email"> <b>First Name</b></label>
+                    <input class="inputover" type="text" value="{{user.first_name}}" readonly
+                        placeholder="Enter First name" name="fisrt" required>
+
+                    <label for="last"> <b>Last Name</b></label>
+                    <input class="inputover" type="text" value="{{user.last_name}}" readonly
+                        placeholder="Enter last name" name="last" required>
+
+                    <label for="last"> <b>Numéro carte nationale</b></label>
+                    <input class="inputover" type="text" value="{{user.numCard}}" readonly
+                        placeholder="Enter Numéro carte nationale" name="numcart" required>
+
+                    <label for="email"> <b>Email</b></label>
+                    <input class="inputover" type="text" value="{{user.email}}" readonly placeholder="Enter Email"
+                        name="uname" required>
+
+                    <label for="tel"><b>Tel</b></label>
+                    <input class="inputover" type="text" value="{{user.phoneNumber}}" readonly
+                        placeholder="Enter Password" name="tel" required>
+
+                    <label for="psw"><b>Adresse</b></label>
+                    <input class="inputover" type="text" value="{{user.address}}" readonly
+                        placeholder="Enter re Password" name="Adresse" required>
+
+                </div>
+            </form>
+        </div>
+
+
+
+
+    </div>
+    {% endif%}
+</div>
+</div>
+{% endblock %}
